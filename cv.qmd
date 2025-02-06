@@ -1,0 +1,89 @@
+---
+title: "Matan Hakim - CV"
+---
+
+# Employment
+
+-   2020 - Present: Co-Founder and Head of Research, [The Israeli Institute for Cultural Policy](https://www.iicp.org.il)
+
+-   2022 - Present: Socio-Economic Researcher, [Arlozorov Forum](https://www.arlozforum.org/)
+
+-   2018 - 2021: Psychometric Exam Teacher, [Kidum](https://www.kidum.com/)
+
+-   2017 - 2018: Physics and Math Teacher, [Atidim](https://atidim.org/)
+
+-   2015 - 2017: Head of Digital, [Tarbut Movement](https://www.tarbutmovement.org)
+
+# Education
+
+-   2020 - Present: MA Graduate Student, Department of Sociology, University of Haifa
+
+-   2016 - 2020: BA **magna cum laude**, Department of Jewish History, University of Haifa
+
+-   2017 - 2018: Information Specialist, Technion: Israel Institute of Technology
+
+# Projects
+
+-   Data analytics and creative content writing, PRESENTENSE (part of the Trump Family Foundation)
+
+-   Financial data analysis for strategic business development, Kelim Shluvim[^1]
+
+[^1]: See this [TheMarker news article](https://www.themarker.com/labels/2021-05-09/ty-article-labels/0000017f-f88d-d47e-a37f-f9bdba270000)
+
+## Open Source contributions
+
+-   Author and maintainer of [rtlr](https://matanhakim.github.io/rtlr/), an R package for RTL languages
+
+-   [Feature development](https://github.com/sfirke/janitor/pull/542) in [janitor](https://sfirke.github.io/janitor/), an R package for examining and cleaning dirty data
+
+-   Proofreading contributions to the open-source books:
+
+    -   [R for Data Science (2e)](https://r4ds.hadley.nz/)
+
+    -   [R Packages (2e)](https://r-pkgs.org/)
+
+    -   [Building reproducible analytical pipelines with R](https://raps-with-r.dev/)
+
+# Academics
+
+-   Teacher Assistant, "Introduction to Social Research" (2021 - 2022), for Dr. Dana Zarhin (Senior Lecturer with tenure), Department of Sociology, University of Haifa
+
+-   Research Assistant, "Limits to the Financialization of the State? The Case of 'Social Impact Investment' in Comparative Perspective" (2021 - Present), for Dr. Asa Maron (Senior Lecturer with tenure), Department of Sociology, University of Haifa
+
+# Conferences
+
+-   [Cultural Mapping and Connecting with Place](https://ces.uc.pt/summerwinterschools/?lang=1&id=28189), University of Coimbra, March 2022, Caldas Da Rainha, Portugal
+
+-   [World Urban Forum 11](https://wuf.unhabitat.org/wuf11https://wuf.unhabitat.org/wuf11), UN-HABITAT, June 2022, Katowice, Poland
+
+-   [Summer Academy on Cultural and Creative Industries and Local Development](https://www.oecd.org/cfe/leed/summer-academy.htm), the OECD, Trento, Italy, 2022
+
+# Hebrew Content
+
+## Publications
+
+-   [Young People in the Labor Market in Israel](https://www.arlozforum.org/post/10029) (2024), Arlozorov Forum
+
+-   [The Want of Job Switching: Analysis of Situation and Trends in Israel](https://www.arlozforum.org/post/100022) (2024), Arlozorov Forum
+
+-   The Israeli Guide for Cultural Mapping (2023), the Israeli Institute for Cultural Policy (under review)
+
+-   [Data Analysis 2011-2021 - Culture in Israel in a Regional Perspective](https://fs.knesset.gov.il/25/Committees/25_cs_bg_2622556.pdf) (2023), the Israeli Institute for Cultural Policy (submitted to the Israeli Parliament)
+
+-   [Culture as an Israeli Growth Driver](https://fs.knesset.gov.il//23/Committees/23_cs_bg_592572.pdf) (2020), Tarbut Movement (submitted to the Israeli Parliament)
+
+-   [Cultural Policy Data](https://fs.knesset.gov.il//23/Committees/23_cs_bg_592570.pdf) (2020), Tarbut Movement (submitted to the Israeli Parliament)
+
+## Talks
+
+-   [Data on the Cultural Field in Israel](https://youtu.be/8amSZNUj7nk) (2023), presented in the Israeli Parliament, Special Committee for Strengthening and Developing the Negev and Galilee
+
+-   [Cultural Policy and Local Governments: Between Inequalities and Political Compensation](https://youtu.be/rf0z5dJxsMY?t=94) (2022), presented in the Annual Conference of the Israeli Sociological Society
+
+    -   A draft of this talk was also presented in the University of Haifa Young Researchers Forum of the Interdisciplinary Center for the Study of Poverty and Social Exclusion (2021)
+
+-   [Inequality in Israel](https://youtu.be/2HiNh99_DOg) (2020), presented in the Balfur Protest Organization Meeting
+
+-   [Christian Motives in "Kehilyatenu"](https://youtu.be/wwYfH9zKSFc?t=146) (2020), presented in the Annual Conference of the Israeli Labor Movement Research Forum
+
+-   [The Privatization of the Israeli Pension System](https://youtu.be/niYR5loSlnQ) (2017), Beit Berl Academic College

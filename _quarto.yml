@@ -1,0 +1,36 @@
+project:
+  type: website
+
+website:
+  # site-url: https://www.matanhakim.org
+  description: "Matan Hakim's personal website"
+  image: profile.jpg
+  favicon: profile.jpg
+  twitter-card: true
+  open-graph: true
+  navbar:
+    title: "Matan Hakim - Policy Data Scientist"
+    right:
+      - text: "About"
+        file: index.qmd
+      - text: "Blog"
+        file: posts.qmd
+      - text: "CV"
+        file: cv.qmd
+      - icon: github
+        href: https://github.com/matanhakim
+      - icon: twitter
+        href: https://twitter.com/MatanHakim
+      - icon: mastodon
+        href: https://fosstodon.org/@matanhakim
+        rel: me
+      - icon: rss
+        href: posts.xml
+format:
+  html:
+    theme: 
+      light: flatly
+      dark: darkly
+    css: styles.css
+execute:
+  freeze: auto
