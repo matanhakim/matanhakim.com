@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: ee81cfa6-2adb-4070-b925-d22dacf72de8
+      url: 'https://amazing-caramel-593915.netlify.app'

@@ -1,24 +1,66 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Matan Hakim - Policy Data Scientist",
-    "section": "",
-    "text": "Head of Research at the Israeli Institute for Cultural Policy.\nI lead projects in data science, research, analytics, and social and economic policy."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
     "objectID": "posts.html",
     "href": "posts.html",
     "title": "Blog",
     "section": "",
     "text": "Height per Minute - Analyzing Height Trends in the NBA\n\n\n\n\n\n\ncode\n\n\nanalysis\n\n\nNBA\n\n\n\n\n\n\n\n\n\nSep 9, 2023\n\n\nMatan Hakim\n\n\n\n\n\n\n\n\n\n\n\n\nIntroducing rtlr - an R Package for RTL Languages\n\n\nConvenience functions to make some common tasks with right-to-left string printing easier, more convenient and with no need to remember long Unicode characters. Specifically helpful for right-to-left languages such as Arabic, Persian and Hebrew.\n\n\n\nnews\n\n\ncode\n\n\nrtlr\n\n\nRWeekly Highlights\n\n\n\n\n\n\n\n\n\nApr 5, 2023\n\n\nMatan Hakim\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/2023-04-05-rtlr-0-1-0/index.html",
+    "href": "posts/2023-04-05-rtlr-0-1-0/index.html",
+    "title": "Introducing rtlr - an R Package for RTL Languages",
+    "section": "",
+    "text": "(This blog post was chosen as a highlight for R Weekly issue 2023-W15)\nDo you know anyone who speaks Arabic, Persian or Hebrew? Do you know any R professional who speaks any of these languages? Maybe you are yourself an R professional who speaks any of these languages and uses them in your R work?\nTL;DR - You can use rtlr to fix right-to-left problems in R. install the package with install.packages(\"rtlr\") and use str_rtl() with your text as argument(s)."
+  },
+  {
+    "objectID": "posts/2023-04-05-rtlr-0-1-0/index.html#footnotes",
+    "href": "posts/2023-04-05-rtlr-0-1-0/index.html#footnotes",
+    "title": "Introducing rtlr - an R Package for RTL Languages",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://www.w3.org/International/questions/qa-scripts↩︎\nFor further reading on this, see: https://unicode.org/reports/tr9/#Directional_Formatting_Characters↩︎\nThis is because \\n stops the RTL-embedding provided by \\u202B, and forces you to write this as \\n\\u202B instead.↩︎"
+  },
+  {
+    "objectID": "cv.html",
+    "href": "cv.html",
+    "title": "Matan Hakim - CV",
+    "section": "",
+    "text": "2020 - Present: Co-Founder and Head of Research, The Israeli Institute for Cultural Policy\n2022 - Present: Socio-Economic Researcher, Arlozorov Forum\n2018 - 2021: Psychometric Exam Teacher, Kidum\n2017 - 2018: Physics and Math Teacher, Atidim\n2015 - 2017: Head of Digital, Tarbut Movement"
+  },
+  {
+    "objectID": "cv.html#open-source-contributions",
+    "href": "cv.html#open-source-contributions",
+    "title": "Matan Hakim - CV",
+    "section": "Open Source contributions",
+    "text": "Open Source contributions\n\nAuthor and maintainer of rtlr, an R package for RTL languages\nFeature development in janitor, an R package for examining and cleaning dirty data\nProofreading contributions to the open-source books:\n\nR for Data Science (2e)\nR Packages (2e)\nBuilding reproducible analytical pipelines with R"
+  },
+  {
+    "objectID": "cv.html#publications",
+    "href": "cv.html#publications",
+    "title": "Matan Hakim - CV",
+    "section": "Publications",
+    "text": "Publications\n\nYoung People in the Labor Market in Israel (2024), Arlozorov Forum\nThe Want of Job Switching: Analysis of Situation and Trends in Israel (2024), Arlozorov Forum\nThe Israeli Guide for Cultural Mapping (2023), the Israeli Institute for Cultural Policy (under review)\nData Analysis 2011-2021 - Culture in Israel in a Regional Perspective (2023), the Israeli Institute for Cultural Policy (submitted to the Israeli Parliament)\nCulture as an Israeli Growth Driver (2020), Tarbut Movement (submitted to the Israeli Parliament)\nCultural Policy Data (2020), Tarbut Movement (submitted to the Israeli Parliament)"
+  },
+  {
+    "objectID": "cv.html#talks",
+    "href": "cv.html#talks",
+    "title": "Matan Hakim - CV",
+    "section": "Talks",
+    "text": "Talks\n\nData on the Cultural Field in Israel (2023), presented in the Israeli Parliament, Special Committee for Strengthening and Developing the Negev and Galilee\nCultural Policy and Local Governments: Between Inequalities and Political Compensation (2022), presented in the Annual Conference of the Israeli Sociological Society\n\nA draft of this talk was also presented in the University of Haifa Young Researchers Forum of the Interdisciplinary Center for the Study of Poverty and Social Exclusion (2021)\n\nInequality in Israel (2020), presented in the Balfur Protest Organization Meeting\nChristian Motives in “Kehilyatenu” (2020), presented in the Annual Conference of the Israeli Labor Movement Research Forum\nThe Privatization of the Israeli Pension System (2017), Beit Berl Academic College"
+  },
+  {
+    "objectID": "cv.html#footnotes",
+    "href": "cv.html#footnotes",
+    "title": "Matan Hakim - CV",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nSee this TheMarker news article↩︎"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Matan Hakim - Policy Data Scientist",
+    "section": "",
+    "text": "Head of Research at the Israeli Institute for Cultural Policy.\nI lead projects in data science, research, analytics, and social and economic policy."
   },
   {
     "objectID": "posts/2023-09-09-nba-heights/index.html#setup",

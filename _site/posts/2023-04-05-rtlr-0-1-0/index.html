@@ -110,10 +110,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="Introducing rtlr - an R Package for RTL Languages">
 <meta property="og:description" content="Convenience functions to make some common tasks with right-to-left string printing easier, more convenient and with no need to remember long Unicode characters. Specifically helpful for right-to-left languages such as Arabic, Persian and Hebrew.">
-<meta property="og:image" content="image.png">
+<meta property="og:image" content="https://amazing-caramel-593915.netlify.app/posts/2023-04-05-rtlr-0-1-0/image.png">
+<meta property="og:image:height" content="278">
+<meta property="og:image:width" content="240">
 <meta name="twitter:title" content="Introducing rtlr - an R Package for RTL Languages">
 <meta name="twitter:description" content="Convenience functions to make some common tasks with right-to-left string printing easier, more convenient and with no need to remember long Unicode characters. Specifically helpful for right-to-left languages such as Arabic, Persian and Hebrew.">
-<meta name="twitter:image" content="image.png">
+<meta name="twitter:image" content="https://amazing-caramel-593915.netlify.app/posts/2023-04-05-rtlr-0-1-0/image.png">
+<meta name="twitter:image-height" content="278">
+<meta name="twitter:image-width" content="240">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -621,7 +625,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/amazing-caramel-593915\.netlify\.app");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
