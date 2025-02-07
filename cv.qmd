@@ -16,7 +16,7 @@ title: "Matan Hakim - CV"
 
 # Education
 
--   2020 - Present: MA Graduate Student, Department of Sociology, University of Haifa
+-   2020 - 2024: MA, Department of Sociology, University of Haifa
 
 -   2016 - 2020: BA **magna cum laude**, Department of Jewish History, University of Haifa
 
@@ -45,6 +45,10 @@ title: "Matan Hakim - CV"
     -   [Building reproducible analytical pipelines with R](https://raps-with-r.dev/)
 
 # Academics
+
+- Author of a thesis research work: "The Cultural Loyalty Dividend":
+Inequality in Cultural Funding as a Tool to Build Political Loyalty
+
 
 -   Teacher Assistant, "Introduction to Social Research" (2021 - 2022), for Dr. Dana Zarhin (Senior Lecturer with tenure), Department of Sociology, University of Haifa
 
