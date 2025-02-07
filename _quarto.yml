@@ -19,13 +19,13 @@ website:
         file: cv.qmd
       - icon: github
         href: https://github.com/matanhakim
-      - icon: twitter
-        href: https://twitter.com/MatanHakim
+      - text: "{{< iconify fa6-brands bluesky size=1.1em title='Bluesky' >}}"
+        href: https://bsky.app/profile/matanhakim.bsky.social
       - icon: mastodon
         href: https://fosstodon.org/@matanhakim
         rel: me
-      - icon: rss
-        href: posts.xml
+      - text: "{{< iconify simple-icons:orcid >}}"
+        href: https://orcid.org/0009-0002-9372-8975
 format:
   html:
     theme: 
