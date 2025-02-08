@@ -1,0 +1,66 @@
+---
+title: ""
+subtitle: ""
+author: "Matan Hakim"
+date: "2025-02-08"
+categories: 
+  - code
+  - analysis
+  - NBA
+image: "nba_logo.jpg"
+fig-width: 6
+fig-asp: 0.618
+fig-align: center
+cap-location: top
+out-width: "80%"
+---
+
+![](nba_logo.jpg)
+
+# Code
+
+## Setup
+
+Let's load the relevant packages.
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+library(rvest)
+devtools::install_github("matanhakim/il.cbs.muni")
+library(il.cbs.muni)
+library(janitor)
+library(scales)
+library(conflicted)
+conflicts_prefer(dplyr::filter())
+```
+
+```{r}
+read_season_dist <- function(year) {
+  Sys.sleep(4) # <1>
+  read_html(str_c("https://www.basketball-reference.com/leagues/NBA_", year, "_shooting.html")) |> 
+    html_element("table") |> 
+    html_table(header = FALSE) |> 
+    row_to_names_fill(1:2, fill_missing = FALSE) |> 
+    clean_names()
+}
+```
+
+```{r}
+read_season_total <- function(year) {
+  Sys.sleep(4) # <1>
+  read_html(str_c("https://www.basketball-reference.com/leagues/NBA_", year, "_totals.html")) |> 
+    html_element("table") |> 
+    html_table() |> 
+    clean_names()
+}
+```
+
+
+```{r}
+df_dist <- read_season_dist(2024)
+df_players <- read_season_total(2024)
+```
+
+
