@@ -43,7 +43,8 @@ read_season_dist <- function(year) {
     html_element("table") |> 
     html_table(header = FALSE) |> 
     row_to_names_fill(1:2, fill_missing = FALSE) |> 
-    clean_names()
+    clean_names() |> 
+    mutate(across(everything(), parse_guess))
 }
 ```
 
@@ -59,8 +60,26 @@ read_season_total <- function(year) {
 
 
 ```{r}
-df_dist <- read_season_dist(2024)
-df_players <- read_season_total(2024)
+df_dist_raw <- read_season_dist(2024)
+  
+df_players_raw <- read_season_total(2024)
+```
+
+```{r}
+df_players <- df_players_raw |> 
+  distinct(player, .keep_all = TRUE) |> 
+  select(player, fg, fga)
+
+df_dist <- df_dist_raw |> 
+  distinct(player, .keep_all = TRUE) |> 
+  select(!c(rk, awards))
+```
+
+
+```{r}
+df <- df_players |> 
+  left_join(df_dist, join_by(player)) |> 
+  relocate(c(fg, fga), .after = mp)
 ```
 
 
