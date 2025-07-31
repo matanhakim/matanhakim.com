@@ -209,7 +209,7 @@ Now let's see how different positions have adapted to these league-wide changes.
 plot_position <- df_freq |> 
   filter(!(dist %in% c("2p", "dunk"))) |> 
   ggplot(aes(year, freq, color = pos, tooltip = pos, data_id = pos)) +
-  geom_line_interactive(linewidth = 1) +
+  geom_line_interactive(linewidth = 0.7) +
   facet_wrap(~ dist, scales = "free_y") + # <1>
   scale_y_continuous(labels = label_percent()) +
   scale_color_solarized() +
