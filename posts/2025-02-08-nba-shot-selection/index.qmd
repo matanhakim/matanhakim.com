@@ -140,7 +140,8 @@ df_freq <- df |>
   pivot_longer(!c(year, pos:fga), names_to = "dist", values_to = "freq") |> # <1>
   mutate(dist = str_remove_all(dist, "percent_of_fga_by_distance_|s_percent_fga")) |> # <2>
   mutate(
-    dist = fct_relevel(dist, "0_3", "3_10", "10_16", "16_3p", "3p"), # <3>
+    dist = fct_relevel(dist, "0_3", "3_10", "10_16", "16_3p", "3p") |> # <3>
+      str_replace_all("_", "-"),
     pos = fct_relevel(pos, "C", "PF", "SF", "SG", "PG") # <4>
   ) |>
   filter(fga > 0, year > 1997) |> # <5>
@@ -164,7 +165,8 @@ df_freq_tot <- df |>
   pivot_longer(!c(year, fg:fga), names_to = "dist", values_to = "freq") |> 
   mutate(dist = str_remove_all(dist, "percent_of_fga_by_distance_|s_percent_fga")) |> 
   mutate(
-    dist = fct_relevel(dist, "0_3", "3_10", "10_16", "16_3p", "3p")
+    dist = fct_relevel(dist, "0_3", "3_10", "10_16", "16_3p", "3p") |> 
+      str_replace_all("_", "-")
   ) |>
   filter(fga > 0, year > 1997) |> 
   summarise(
@@ -190,7 +192,7 @@ plot_total <- df_freq_tot |>
   labs(
     x = "",
     y = "Shot Frequency",
-    color = "Distance",
+    color = "Distance (feet)",
     title = "Shot Frequency by Year and Distance from the Basket",
     subtitle = "The 3-point revolution meets the mid-range exodus",
     caption = "Data: basketball-reference.com. Analysis: Matan Hakim."
