@@ -1,0 +1,271 @@
+---
+title: "Beyond the 3-Point Revolution: A Deep Dive into NBA Shot Selection by Position and Distance"
+subtitle: "How different positions have adapted to the changing landscape of NBA shooting"
+author: "Matan Hakim"
+date: "2025-08-01"
+categories: 
+  - code
+  - analysis
+  - NBA
+image: "nba_logo.jpg"
+fig-width: 6
+fig-asp: 0.618
+fig-align: center
+cap-location: top
+out-width: "80%"
+---
+
+![](nba_logo.jpg)
+
+# Introduction
+Summer is when you have time in the NBA media and fandom world to relax for a second, and look for multi-year trends. I find specifically interesting the NBA discussion that is filled with talk about the "3-point revolution", with additional references to "the death of the mid-range shot". And so it seems, the familiar chart of the 3-pt shot frequency going up over time is seen everywhere you go, and considered common knowledge. More specifically, I encountered this discussion with many nuances in the [Thinking Basketball podcast](https://www.youtube.com/ThinkingBasketball) with Ben Taylor and Cody Houdek. Nevertheless, I think it is worthwhile to have a more focused look at the specific **ranges** where this change is occurring, and more specifically at the different **positions** and the variability between them.
+
+This blog post will explore this idea, using the R programming language and data scraping, analysis and visualization techniques. If you're interested in either NBA basketball or data, I think you might find it useful, interesting, and even fun!
+
+Let's get to it.
+
+# Code
+
+## Setup
+
+Let's load the relevant packages.
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse) # <1>
+library(rvest) # <2>
+devtools::install_github("sfirke/janitor") # <3>
+library(janitor)
+library(scales) # <4>
+library(ggthemes) # <5>
+library(ggiraph) # <6>
+library(conflicted) # <7>
+conflicts_prefer(dplyr::filter())
+```
+1. The tidyverse is my favorite data analysis framework, and we'll be using it for wrangling and visualization.
+2. rvest is for web-scraping, that's how we're going to get our data.
+3. I'm installing the development version of janitor (one of the go-to packages for easy utility functions!) because the `row_to_names()` function has a specific feature (that I created! Yey!) that isn't available in the CRAN version yet.
+4. scales helps us format our plot axes with percentage labels and other formatting.
+5. ggthemes provides additional color palettes, including the solarized theme we'll use.
+6. ggiraph makes your plots interactive.
+7. conflicted lets you be clear and intentional with your namespace clashes.
+
+Now let's read our data from the web.
+
+# Read data
+
+We will be using the [Basketball Reference website](https://www.basketball-reference.com) as our data source. Basketball Reference is the gold standard for NBA statistics, offering comprehensive shooting data broken down by distance ranges since the 1997-98 season.
+
+Before actually scraping the data, we need to define our functions that would do so.
+
+## Define scraping functions
+
+Our first data source is the seasonal player shooting stats table ([2025 for example.](https://www.basketball-reference.com/leagues/NBA_2025_shooting.html)).
+In this table, our unit of analysis is a player, and the table is for a specific season. The columns offer different breakdowns of field goal attempts frequency by distance from the basket, along with field goal percent (accuracy) by distance. The earliest data is from the 1997-1998 season (oh, the nostalgia!).
+
+```{r}
+read_season_dist <- function(year) {
+  Sys.sleep(4) # <1>
+  read_html(str_c("https://www.basketball-reference.com/leagues/NBA_", year, "_shooting.html")) |> 
+    html_element("table") |> 
+    html_table(header = FALSE) |> 
+    row_to_names(1:2) |> # <2>
+    clean_names() |> 
+    mutate(across(everything(), parse_guess)) # <3>
+}
+```
+1. In order to avoid being rejected by the Basketball Reference policy, we need to wait between each visit to a page.
+2. In this [cool new feature to {janitor}](https://github.com/sfirke/janitor/pull/542) you can elevate multiple rows to act as new column names.
+3. After fixing the column names, you can guess and parse the column types.
+
+Unfortunately, the shooting stats table is missing a very important value - the **total** number of shots for a player in a season. Right now we only have the frequency, but not the absolute value. We need this data to correctly calculate the relative weight of each player. Think about it: a player who takes 50 shots per season shouldn't have the same influence on league-wide trends as someone who takes 1,500 shots. So let's read another table, where we have this data.
+
+
+```{r}
+read_season_total <- function(year) {
+  Sys.sleep(4)
+  read_html(str_c("https://www.basketball-reference.com/leagues/NBA_", year, "_totals.html")) |> 
+    html_element("table") |> 
+    html_table() |> 
+    clean_names()
+}
+```
+
+Now, let's perform the web-scraping. We are reading data from 1998 to 2025, covering nearly three decades of NBA evolution.
+
+```{r}
+df_dist_raw <- tibble(year = 1998:2025) |> 
+  mutate(data = map(year, read_season_dist)) |> 
+  unnest(data)
+  
+df_players_raw <-  tibble(year = 1998:2025) |> 
+  mutate(data = map(year, read_season_total)) |> 
+  unnest(data)
+```
+
+This process will take several minutes due to our rate limiting (we're being good citizens of the web!). The `map()` function applies our scraping function to each year, and `unnest()` combines all the individual season data frames into two comprehensive datasets.
+
+## Clean and join our datasets
+
+Basketball Reference data comes with some quirks that we need to handle. Players who were traded during a season appear multiple times (once for each team plus a "total" row), and there are various formatting issues we need to address.
+
+```{r}
+df_players <- df_players_raw |> 
+  distinct(player, year, .keep_all = TRUE) |> # <1>
+  select(year, player, fg, fga) # <2>
+
+df_dist <- df_dist_raw |> 
+  distinct(player, year, .keep_all = TRUE) |> 
+  select(!c(rk, awards)) # <3>
+```
+1. Remove duplicate rows for players who were traded mid-season, and keep only seasonal stats.
+2. We only need the basic shooting volume data from this table.
+3. Remove unnecessary columns like rank and awards.
+
+```{r}
+df <- df_players |> 
+  left_join(df_dist, join_by(player, year)) |> 
+  relocate(c(fg, fga), .after = mp) # <1>
+```
+1. Move the shooting volume columns next to minutes played for logical organization.
+
+# Manipulate data
+
+Now comes the fun part - transforming our data into a format suitable for analysis. We need to convert the wide format (where each distance range is a separate column) into a long format that's easier to work with for visualization and analysis. Additionally, we will summarize the data into a frequency table with a single row for every year-position-distance.
+
+```{r}
+df_freq <- df |> 
+  select(year, pos, fg:fga, starts_with("percent_of_fga_by_distance"), dunks_percent_fga) |> 
+  pivot_longer(!c(year, pos:fga), names_to = "dist", values_to = "freq") |> # <1>
+  mutate(dist = str_remove_all(dist, "percent_of_fga_by_distance_|s_percent_fga")) |> # <2>
+  mutate(
+    dist = fct_relevel(dist, "0_3", "3_10", "10_16", "16_3p", "3p"), # <3>
+    pos = fct_relevel(pos, "C", "PF", "SF", "SG", "PG") # <4>
+  ) |>
+  filter(fga > 0, year > 1997) |> # <5>
+  summarise(
+    .by = c(year, pos, dist),
+    freq = weighted.mean(freq, fga) # <6>
+  )
+```
+1. Transform from wide to long format, creating a row for each player-year-distance combination.
+2. Clean up the distance column names by removing the common prefix.
+3. Order distance ranges logically from closest to farthest from the basket.
+4. Order positions from traditional "big" to "small" (Center to Point Guard).
+5. Filter out players with zero shot attempts and years before our analysis period.
+6. Calculate weighted averages by position and distance, giving more weight to high-volume shooters.
+
+Let's also create a league-wide summary without position breakdowns:
+
+```{r}
+df_freq_tot <- df |> 
+  select(year, fg:fga, starts_with("percent_of_fga_by_distance"), dunks_percent_fga) |> 
+  pivot_longer(!c(year, fg:fga), names_to = "dist", values_to = "freq") |> 
+  mutate(dist = str_remove_all(dist, "percent_of_fga_by_distance_|s_percent_fga")) |> 
+  mutate(
+    dist = fct_relevel(dist, "0_3", "3_10", "10_16", "16_3p", "3p")
+  ) |>
+  filter(fga > 0, year > 1997) |> 
+  summarise(
+    .by = c(year, dist),
+    freq = weighted.mean(freq, fga)
+  )
+```
+
+# Visualize
+
+## League-wide trends by distance
+
+Let's start with the big picture - how has shot selection changed across the entire league?
+
+```{r}
+plot_total <- df_freq_tot |> 
+  filter(!(dist %in% c("2p", "dunk"))) |> # <1>
+  mutate(dist = fct_reorder2(dist, year, freq)) |> # <2>
+  ggplot(aes(year, freq, color = dist, tooltip = dist, data_id = dist)) +
+  geom_line_interactive(linewidth = 1) + 
+  scale_y_continuous(labels = label_percent()) +
+  scale_color_solarized() +
+  labs(
+    x = "",
+    y = "Shot Frequency",
+    color = "Distance",
+    title = "Shot Frequency by Year and Distance from the Basket",
+    subtitle = "The 3-point revolution meets the mid-range exodus",
+    caption = "Data: basketball-reference.com. Analysis: Matan Hakim."
+  )
+
+girafe(ggobj = plot_total)
+```
+1. Remove aggregate categories to focus on specific distance ranges.
+2. Reorder the legend based on the final year values for better readability.
+
+## Position-specific trends
+
+Now let's see how different positions have adapted to these league-wide changes. This is where things get really interesting!
+
+```{r}
+plot_position <- df_freq |> 
+  filter(!(dist %in% c("2p", "dunk"))) |> 
+  ggplot(aes(year, freq, color = pos, tooltip = pos, data_id = pos)) +
+  geom_line_interactive(linewidth = 1) +
+  facet_wrap(~ dist, scales = "free_y") + # <1>
+  scale_y_continuous(labels = label_percent()) +
+  scale_color_solarized() +
+  labs(
+    x = "",
+    y = "Shot Frequency",
+    color = "Position",
+    title = "Shot Frequency by Year, Position and Distance from the Basket",
+    subtitle = "How the 3-point revolution affected different positions",
+    caption = "Data: basketball-reference.com. Analysis: Matan Hakim."
+  )
+
+girafe(ggobj = plot_position)
+```
+1. Use free y-scales to better show the trends within each distance range.
+
+# Analysis
+
+## The Death of the Mid-Range Shot
+
+Looking at our league-wide visualization, we can see the famous "3-point revolution" in action, but the real story is more nuanced than the typical narrative suggests. Yes, 3-pointers have exploded from around 16% in 1998 to over 42% in 2025. But the most dramatic change is actually the systematic elimination of mid-range shots, particularly in the 16-foot to 3-point line range, which has plummeted from around 24% to just 5% over the same period.
+
+This makes perfect basketball sense. A 20-foot jump shot is worth the same 2 points as a layup, but it's much harder to make. Meanwhile, step back just a few feet and that same shot becomes worth 3 points. The math is brutal for mid-range shots.
+
+Interestingly enough, the 3-10 foot shot is alive and well, even showing an increase in recent years from about 15% to 21%. This reflects the uptick in "floater" type shots, tear-drops, push-shots, "the giant slayer", and other shots taken mostly by perimeter players trying to shoot above rim-protecting big men.
+
+## Position-Specific Adaptations
+
+When we break down the trends by position and distance, we see fascinating differences in how players have adapted. Each distance range tells its own story:
+
+**0-3 feet:** This shot distance serves as the main differentiator between positions - the bigger the position, the more shots come from the rim area. What's particularly striking is how the gaps between positions have widened over time. Centers now take nearly 45% of their shots at the rim, while point guards take only about 18%. This reinforces the growing divide between "big-men" and "wings" and "smalls" - a clear manifestation of the split between perimeter and interior players.
+
+**3-10 feet:** Interestingly, and as mentioned above, this shot distance has seen a rise in popularity, especially among guards and small forwards. The position hierarchy remains similar to rim shots, with centers leading the way, but the trends show this becoming a more valuable weapon for perimeter players navigating crowded paint areas.
+
+**10-16 feet:** Here's where things get fascinating. The short mid-range has actually become a more common weapon in the point guard's toolbox, even as other positions have abandoned it. The rise in popularity of this shot distance among PGs, in contrast to other positions' trends, might be attributed to the evolution of the pick-and-roll game and the need for shorter players to create effective counters. Think of "snaking" the pick-and-roll, a move point guards like Chris Paul and TJ McConnell have perfected.
+
+**16 feet-3pt:** This distance plot is the poster child for the death of the mid-range. Not a single position has shown willingness to maintain meaningful volume shooting from this range, as the 3-point revolution has reached its logical conclusion. This is the only shot distance where all five positions converge to the same trend - universal abandonment.
+
+**3-point:** The breakdown by position reveals that "the 3-point revolution" is actually four distinct sub-revolutions:
+
+1. **"The Long Evolution"** - Ever since the inception of the 3-point shot, its frequency has been climbing, especially among guards and forwards. This trend continued almost without interruption from 1998 to 2013.
+
+2. **"The Power Forward Revolution"** - Around 2013, power forwards' 3-point frequency saw massive increases. In 2012, small forwards shot 3-pointers three times as much as power forwards, but by 2017 they had evened out. This represents one of the most dramatic positional transformations in NBA history.
+
+3. **"The Centers Revolution"** - Between 2015 and 2020, centers more than quadrupled their 3-point shot frequency, going from barely 3% to over 15%. This trend fundamentally changed what it means to be a center in the modern NBA.
+
+4. **"The Latest Surge"** - The 2024-25 season has seen a rise in 3-point frequency among almost all positions. Whether this upward trend continues remains to be seen, but it suggests the revolution isn't over yet.
+
+# Conclusion
+
+This deep dive into NBA shot selection reveals that the commonly discussed "3-point revolution" is far more complex and position-specific than the typical narrative suggests. We're not just witnessing one trend, but rather multiple simultaneous transformations happening at different paces across different positions and distance ranges.
+
+The data tells us several key stories: the complete extinction of long mid-range shots, the unexpected resilience of short floaters, the growing positional polarization at the rim, and the staggered adoption of 3-point shooting that has fundamentally redefined every position on the court.
+
+Perhaps most remarkably, we can see how basketball has become more specialized yet more homogeneous. Centers and point guards now take shots from completely different areas of the court (specialization), but when it comes to avoiding the long mid-range, every position has reached the same conclusion (homogenization).
+
+Looking ahead, the recent surge in 3-point attempts suggests this revolution may still have room to run. As defensive schemes continue to adapt and new analytical insights emerge, shot selection will undoubtedly continue evolving. The only certainty is that the mid-range shot from 16-24 feet - once a staple of NBA offense - appears to be permanently relegated to basketball history.
+
+Thank you for tagging along on this journey through nearly three decades of NBA evolution!
