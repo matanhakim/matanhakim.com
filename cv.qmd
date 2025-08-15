@@ -46,8 +46,8 @@ title: "Matan Hakim - CV"
 
 # Academics
 
-- Author of a thesis research work: "The Cultural Loyalty Dividend":
-Inequality in Cultural Funding as a Tool to Build Political Loyalty
+- Author of a thesis research work: ["The Cultural Loyalty Dividend":
+Inequality in Cultural Funding as a Tool to Build Political Loyalty (2024)](https://drive.google.com/file/d/1F5eeEmfzjYN3UFKG5mfDZ1BFCqZuD9Md/view?usp=sharing)
 
 
 -   Teacher Assistant, "Introduction to Social Research" (2021 - 2022), for Dr. Dana Zarhin (Senior Lecturer with tenure), Department of Sociology, University of Haifa
