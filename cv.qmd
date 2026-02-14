@@ -16,7 +16,7 @@ title: "Matan Hakim - CV"
 
 # Education
 
--   2020 - 2024: MA **summa cum laude**, Department of Sociology, University of Haifa
+-   2020 - 2024: MA **valedictorian summa cum laude**, Department of Sociology, University of Haifa
 
 -   2016 - 2020: BA **magna cum laude**, Department of Jewish History, University of Haifa
 
@@ -33,6 +33,8 @@ title: "Matan Hakim - CV"
 ## Open Source contributions
 
 -   Author and maintainer of [rtlr](https://matanhakim.github.io/rtlr/), an R package for RTL languages
+
+-   Author and maintainer of [il.cbs.muni](https://matanhakim.github.io/il.cbs.muni/), an R package for handling Israeli CBS municipal data
 
 -   [Feature development](https://github.com/sfirke/janitor/pull/542) in [janitor](https://sfirke.github.io/janitor/), an R package for examining and cleaning dirty data
 
