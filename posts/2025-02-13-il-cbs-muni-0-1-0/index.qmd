@@ -5,6 +5,7 @@ author: "Matan Hakim"
 date: "2025-02-13"
 categories: [R, packages, release, CRAN, data]
 image: image.png
+df-print: paged
 ---
 
 I'm excited to announce that **il.cbs.muni 0.1.0** is now available on CRAN! This package provides analyst-oriented utility functions to work with Israeli Central Bureau of Statistics (CBS) municipal data, handling the different quirks and inconsistencies across years and data sources.
@@ -49,7 +50,6 @@ The `read_cbs_muni()` function reads municipal data files with pre-configured pa
 ```{r}
 library(il.cbs.muni)
 library(dplyr)
-library(gt)
 
 # Read physical and demographic data for 2021
 df1 <- read_cbs_muni(
@@ -58,7 +58,7 @@ df1 <- read_cbs_muni(
   data_domain = "physical"
 )
 
-df1 |> gt()
+df1
 ```
 
 Supported data domains include:
