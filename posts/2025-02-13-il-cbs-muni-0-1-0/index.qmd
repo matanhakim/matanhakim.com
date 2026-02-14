@@ -1,8 +1,8 @@
 ---
-title: "Introducing il.cbs.muni - An R Package for handling Israeli CBS Municipal Data"
+title: "Introducing il.cbs.muni - An R Package for Handling Israeli CBS Municipal Data"
 subtitle: "Streamlining Israeli Municipal Data Analysis"
 author: "Matan Hakim"
-date: "2025-02-13"
+date: "2026-02-15"
 categories: [R, packages, release, CRAN, data]
 image: image.png
 df-print: paged
@@ -48,13 +48,17 @@ If we toggle a bit along the columns, we can see another problem:
 
 ![](data_muni_2021-B.jpg)
 
-Some column headers need to be filled horizontally, and merged with the cell below them.
+3. Some column headers need to be filled horizontally, and merged with the cell below them.
 
 The `read_cbs_muni()` function reads municipal data files with pre-configured parameters for each year's specific quirks:
 
 ```{r}
+#| output: false
 library(il.cbs.muni)
 library(dplyr)
+```
+
+```{r}
 
 # Read physical and demographic data for 2021
 df1 <- read_cbs_muni(
@@ -176,15 +180,19 @@ df_ses <- read_cbs_index(
   index_type = "ses",
   unit_type = "muni"
 )
+
+df_ses
 ```
 
 Available options:
+
 - **Index types**: `"ses"` (socio-economic status) or `"peri"` (peripherality)
 - **Unit types**: `"muni"` (municipality), `"yishuv"` (settlement), or `"sa"` (statistical area)
 
 As in `read_cbs_muni()`, here too we have parameters stored in `il.cbs.muni:::df_cbs_index_params`.
 
 Now, we have two problems with this data set:
+
 1. The municipal column is for "status" rather than for ID;
 2. The yishuv ID column does not follow the 4-digit convention.
 
@@ -216,6 +224,7 @@ muni_ids
 ```
 
 This returns:
+
 - `"muni"` - CBS municipal IDs and names
 - `"edu"` - Ministry of Education symbols
 - `"tax"` - Israel Tax Authority IDs (H.P. numbers)
