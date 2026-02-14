@@ -33,17 +33,22 @@ The Israeli CBS publishes extensive municipal data covering cities, local counci
 
 ### 1. Read Municipal Data Files
 
-Let's take a look at the plain old municipal Excel data file:
+Israeli CBS provides municipal data in Excel files with different header structures between the years. Trying to combine and load multiple years requires identifying the quirks for each year making it harder to read them. 
+
+Let’s take a look at the plain old municipal Excel data file, specifically from 2021:
+
 ![](data_muni_2021-A.jpg)
 
 We can observe multiple problems:
 
 1. The headers start from the 3rd row, not the first;
-2. The headers span across multiple rows, making it harder to rad them;
+2. The headers span across multiple rows, making it harder to read them;
 
-If we toggle a bit along the columns. we can see another problem:
+If we toggle a bit along the columns, we can see another problem:
+
 ![](data_muni_2021-B.jpg)
-Some column headers need to be filled horizontally, and merged with the cell bellw them.
+
+Some column headers need to be filled horizontally, and merged with the cell below them.
 
 The `read_cbs_muni()` function reads municipal data files with pre-configured parameters for each year's specific quirks:
 
@@ -69,7 +74,7 @@ Supported data domains include:
 - `"labor_force_survey"` - Labor force data
 - `"social_survey"` - Social survey data
 
-Now, Let's say you want budget data from the same year. Perhaps, you would like to know the municipal expenditure on education. This is on a different data domain (i.e., worksheet). We could access it directly, and select the relevant columns with the <tidyselect> framework:
+Now, let's say you want budget data from the same year. Perhaps you would like to know the municipal expenditure on education. This is on a different data domain (i.e., worksheet). We could access it directly, and select the relevant columns with the <tidyselect> framework:
 
 ```{r}
 df2 <- read_cbs_muni(
@@ -117,7 +122,7 @@ df_combined
 
 Please notice that you have to select the specific columns and match them by yourself. Unfortunately, harmonizing the entire dataset is too big of a task to handle, and would hopefully be achieved by widening the scope of the CBS API.
 
-How does il.cbs.muni know how much rows to skip, which columns to fill row-wise, and what are the sheet numbers for each data domain within each year? I have taken the time to parameterize all of this data, so il.cbs.muni becomes a one-stop-shop for your data reading tasks. If you want to look under the ggod, you can check out `il.cbs.muni:::df_cbs_muni_params`. Additionally, I wrote `row_to_names_fill()` as a helper function to fill row-wise some oh the header rows, but it can be used also outside the scope of municipal data.
+How does il.cbs.muni know how many rows to skip, which columns to fill row-wise, and what are the sheet numbers for each data domain within each year? I have taken the time to parameterize all of this data, so il.cbs.muni becomes a one-stop-shop for your data reading tasks. If you want to look under the hood, you can check out `il.cbs.muni:::df_cbs_muni_params`. Additionally, I wrote `row_to_names_fill()` as a helper function to fill row-wise some of the header rows, but it can be used also outside the scope of municipal data.
 
 Going back to our data, you can see that the 10th row municipal name is littered with an asterisk ("*"). We can clean all names with `clean_name()`:
 
@@ -146,7 +151,7 @@ df_yishuv <- read_cbs_yishuv(
 df_yishuv
 ```
 
-As you can see, the yishuv id isn't following the convention of a 4 digit id. This might cause collisions with regional councils when we will use the yishuv id for municipal level analysis, so we should change it with `pad_yishuv_id()`:
+As you can see, the yishuv ID isn't following the convention of a 4-digit ID. This might cause collisions with regional councils when we will use the yishuv ID for municipal level analysis, so we should change it with `pad_yishuv_id()`:
 
 ```{r}
 df_yishuv <- df_yishuv |> 
@@ -177,11 +182,11 @@ Available options:
 - **Index types**: `"ses"` (socio-economic status) or `"peri"` (peripherality)
 - **Unit types**: `"muni"` (municipality), `"yishuv"` (settlement), or `"sa"` (statistical area)
 
-As in `read_cbs_muni()`, here also we have to parameters stored in `il.cbs.muni:::df_cbs_index_params`.
+As in `read_cbs_muni()`, here too we have parameters stored in `il.cbs.muni:::df_cbs_index_params`.
 
 Now, we have two problems with this data set:
-1. The municipal column is for "status" rather for id;
-2. The yishuv id column isn't following the 4-digit concention.
+1. The municipal column is for "status" rather than for ID;
+2. The yishuv ID column does not follow the 4-digit convention.
 
 We can fix these issues with `modify_muni_id()` and `pad_yishuv_id()`:
 
@@ -215,7 +220,7 @@ This returns:
 - `"edu"` - Ministry of Education symbols
 - `"tax"` - Israel Tax Authority IDs (H.P. numbers)
 
-You can use this for your help when you are working with data from The Ministry of Education or non-profits data from Guidestar.
+You can use this table when you are working with data from The Ministry of Education or non-profits data from Guidestar.
 
 ## Resources
 
@@ -226,7 +231,7 @@ You can use this for your help when you are working with data from The Ministry 
 
 ## Future Plans
 
-I'm Hoping to add:
+I'm hoping to add:
 
 - More helper functions for common municipal data transformations
 - Support for additional CBS data sources
@@ -236,6 +241,6 @@ I'm Hoping to add:
 
 ## Acknowledgments
 
-This package builds on the excellent work of the Israeli CBS in publishing municipal data. Special thanks to the tidyverse team for creating the tools that make this package possible. Specifically, This package was able to get submitted to CRAN with full tests and input validation thanks to Positron Assitant, which has been a huge blessing.
+This package builds on the excellent work of the Israeli CBS in publishing municipal data. Special thanks to the tidyverse team for creating the tools that make this package possible. Specifically, this package was able to get submitted to CRAN with full tests and input validation thanks to Positron Assistant, which has been a huge blessing.
 
 Happy analyzing! 📊
