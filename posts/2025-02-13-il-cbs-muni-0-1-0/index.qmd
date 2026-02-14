@@ -32,51 +32,141 @@ The Israeli CBS publishes extensive municipal data covering cities, local counci
 
 ### 1. Read Municipal Data Files
 
+Let's take a look at the plain old municipal Excel data file:
+![](data_muni_2021-A.jpg)
+
+We can observe multiple problems:
+
+1. The headers start from the 3rd row, not the first;
+2. The headers span across multiple rows, making it harder to rad them;
+
+If we toggle a bit along the columns. we can see another problem:
+![](data_muni_2021-B.jpg)
+Some column headers need to be filled horizontally, and merged with the cell bellw them.
+
 The `read_cbs_muni()` function reads municipal data files with pre-configured parameters for each year's specific quirks:
 
 ```{r}
-#| eval: false
 library(il.cbs.muni)
 library(dplyr)
+library(gt)
 
 # Read physical and demographic data for 2021
-df <- read_cbs_muni(
-  path = "path/to/p_libud_2021.xlsx",
+df1 <- read_cbs_muni(
+  path = "p_libud_2021.xlsx",
   year = 2021,
   data_domain = "physical"
 )
+
+df1 |> gt()
 ```
 
 Supported data domains include:
+
 - `"physical"` - Physical and population data
 - `"budget"` - Municipal budget data  
 - `"summary"` - Summary statistics
 - `"labor_force_survey"` - Labor force data
 - `"social_survey"` - Social survey data
 
-### 2. Read Yishuv (Settlement) Data
+Now, Let's say you want budget data from the same year. Perhaps, you would like to know the municipal expenditure on education. This is on a different data domain (i.e., worksheet). We could access it directly, and select the relevant columns with the <tidyselect> framework:
+
+```{r}
+df2 <- read_cbs_muni(
+  "p_libud_2021.xlsx",
+  2021,
+  data_domain = "budget",
+  cols = c(2, 50)
+)
+
+df2
+```
+
+Now, if we want to join the two data frames, we can simply join by municipal ID, either by using its Hebrew variable name or by possibly renaming it:
+
+```{r}
+df <- df1 |> 
+  left_join(df2, join_by(`כללי_סמל הרשות` == `סמל הרשות`)) |> 
+  relocate(contains("שירותים ממלכתיים: חינוך"))
+
+df
+```
+
+Be aware that in order to avoid wrong assumptions, all data types are configured to be character, and need to be parsed to your liking.
+
+### 2. Combine Data from Different Municipality Types
+
+For years 2003-2015, CBS published data on separate sheets for cities/local councils and regional councils.
+
+![](data_muni_2009-A.jpg)
+
+ Use `combine_cbs_muni()` to merge them:
+
+```{r}
+# Combine data from both sheets
+df_combined <- combine_cbs_muni(
+  path = "2009.xls",
+  year = 2009,
+  cols_city = c(1:7, 11),
+  cols_rc = c(1:7, 25),
+  data_domain = "physical"
+)
+
+df_combined
+```
+
+Please notice that you have to select the specific columns and match them by yourself. Unfortunately, harmonizing the entire dataset is too big of a task to handle, and would hopefully be achieved by widening the scope of the CBS API.
+
+How does il.cbs.muni know how much rows to skip, which columns to fill row-wise, and what are the sheet numbers for each data domain within each year? I have taken the time to parameterize all of this data, so il.cbs.muni becomes a one-stop-shop for your data reading tasks. If you want to look under the ggod, you can check out `il.cbs.muni:::df_cbs_muni_params`. Additionally, I wrote `row_to_names_fill()` as a helper function to fill row-wise some oh the header rows, but it can be used also outside the scope of municipal data.
+
+Going back to our data, you can see that the 10th row municipal name is littered with an asterisk ("*"). We can clean all names with `clean_name()`:
+
+```{r}
+df_combined[[10,1]]
+
+df_combined <- df_combined |> 
+  mutate(
+    `שם הרשות` = clean_name(`שם הרשות`)
+  )
+
+df_combined[[10,1]]
+```
+
+### 3. Read Yishuv (Settlement) Data
 
 A **yishuv** is a geographically defined place where people live. Use `read_cbs_yishuv()` to read settlement-level data:
 
 ```{r}
-#| eval: false
 # Read yishuv data with selected columns
 df_yishuv <- read_cbs_yishuv(
-  path = "path/to/bycode2021.xlsx",
+  path = "bycode2021.xlsx",
   cols = c(1, 2, 5, 13)
-) |>
-  mutate(across(2, pad_yishuv_id))
+)
+
+df_yishuv
 ```
 
-### 3. Read CBS Index Data
+As you can see, the yishuv id isn't following the convention of a 4 digit id. This might cause collisions with regional councils when we will use the yishuv id for municipal level analysis, so we should change it with `pad_yishuv_id()`:
+
+```{r}
+df_yishuv <- df_yishuv |> 
+  mutate(
+    `סמל יישוב` = pad_yishuv_id(`סמל יישוב`)
+  )
+
+  df_yishuv
+```
+
+### 4. Read CBS Index Data
 
 The package handles both socio-economic status (SES) and peripherality indices at different geographic levels:
 
+![](data_ses_2019-A.jpg)
+
 ```{r}
-#| eval: false
 # Read socio-economic index at municipality level
 df_ses <- read_cbs_index(
-  path = "path/to/24_22_375t1.xlsx",
+  path = "T02.xlsx",
   year = 2019,
   index_type = "ses",
   unit_type = "muni"
@@ -87,17 +177,37 @@ Available options:
 - **Index types**: `"ses"` (socio-economic status) or `"peri"` (peripherality)
 - **Unit types**: `"muni"` (municipality), `"yishuv"` (settlement), or `"sa"` (statistical area)
 
-### 4. Harmonize Municipal IDs
+As in `read_cbs_muni()`, here also we have to parameters stored in `il.cbs.muni:::df_cbs_index_params`.
+
+Now, we have two problems with this data set:
+1. The municipal column is for "status" rather for id;
+2. The yishuv id column isn't following the 4-digit concention.
+
+We can fix these issues with `modify_muni_id()` and `pad_yishuv_id()`:
+
+```{r}
+df_ses <- df_ses |> 
+  mutate(
+    muni_id = modify_muni_id(`מעמד מוניציפלי_MUNICIPAL STATUS`, `סמל יישוב_CODE OF LOCALITY`),
+    yishuv_id = pad_yishuv_id(`סמל יישוב_CODE OF LOCALITY`),
+    .before = 1
+  )
+
+  df_ses
+```
+
+### 5. Harmonize Municipal IDs
 
 Israeli municipalities have different IDs across government agencies. The `read_muni_id()` function provides a lookup table:
 
 ```{r}
-#| eval: false
 # Get IDs and names from multiple agencies
 muni_ids <- read_muni_id(
   id_types = c("muni", "edu", "tax"),
   include_names = TRUE
 )
+
+muni_ids
 ```
 
 This returns:
@@ -105,65 +215,7 @@ This returns:
 - `"edu"` - Ministry of Education symbols
 - `"tax"` - Israel Tax Authority IDs (H.P. numbers)
 
-### 5. Combine Data from Different Municipality Types
-
-For years 2003-2015, CBS published data on separate sheets for cities/local councils and regional councils. Use `combine_cbs_muni()` to merge them:
-
-```{r}
-#| eval: false
-# Combine data from both sheets
-df_combined <- combine_cbs_muni(
-  path = "path/to/2009.xls",
-  year = 2009,
-  cols_city = c(1:7, 11),
-  cols_rc = c(1:7, 25),
-  data_domain = "physical"
-)
-```
-
-## Example Workflow
-
-Here's a complete example analyzing municipal socio-economic status:
-
-```{r}
-#| eval: false
-#| message: false
-library(il.cbs.muni)
-library(dplyr)
-library(ggplot2)
-
-# Read SES index data
-ses_data <- read_cbs_index(
-  path = "24_22_375t1.xlsx",
-  year = 2019,
-  index_type = "ses",
-  unit_type = "muni"
-) |>
-  # Parse numeric columns
-  mutate(
-    ses_rank = as.numeric(`דירוג כולל`),
-    ses_cluster = as.numeric(`אשכול כולל`)
-  )
-
-# Create visualization
-ggplot(ses_data, aes(x = ses_cluster)) +
-  geom_bar(fill = "steelblue") +
-  labs(
-    title = "Distribution of Municipalities by SES Cluster",
-    x = "SES Cluster (1=Lowest, 10=Highest)",
-    y = "Number of Municipalities"
-  ) +
-  theme_minimal()
-```
-
-## Helper Functions
-
-The package includes several utility functions:
-
-- `pad_yishuv_id()` - Pad yishuv IDs to 4-digit format
-- `modify_muni_id()` - Modify municipal IDs based on status and yishuv ID
-- `clean_name()` - Clean settlement names from unwanted characters
-- `row_to_names_fill()` - Elevate rows to column names and fill row-wise
+You can use this for your help when you are working with data from The Ministry of Education or non-profits data from Guidestar.
 
 ## Resources
 
@@ -174,15 +226,16 @@ The package includes several utility functions:
 
 ## Future Plans
 
-I'm planning to add:
+I'm Hoping to add:
 
-- More helper functions for common data transformations
+- More helper functions for common municipal data transformations
 - Support for additional CBS data sources
 - Vignettes with detailed workflows
-- Pre-processed datasets for quick exploration
+- A hex sticker!
+- Anything that the Israeli open source community might be interested in
 
 ## Acknowledgments
 
-This package builds on the excellent work of the Israeli CBS in publishing municipal data. Special thanks to the tidyverse team for creating the tools that make this package possible.
+This package builds on the excellent work of the Israeli CBS in publishing municipal data. Special thanks to the tidyverse team for creating the tools that make this package possible. Specifically, This package was able to get submitted to CRAN with full tests and input validation thanks to Positron Assitant, which has been a huge blessing.
 
 Happy analyzing! 📊
