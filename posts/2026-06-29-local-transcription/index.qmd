@@ -2,7 +2,7 @@
 title: "Free, Offline Speech-to-Text for Non-English Languages (Claude Code Included)"
 subtitle: "How I run Whisper on my own laptop – no cloud, no API keys, no usage limits – to transcribe Hebrew meetings and hand an LLM full context by talking instead of typing."
 author: "Matan Hakim"
-date: "2026-06-25"
+date: "2026-06-29"
 categories: [AI, transcription, Whisper, tools]
 image: "workflow.png"
 ---
