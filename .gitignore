@@ -11,3 +11,10 @@
 
 /_site/
 **/*.quarto_ipynb
+
+# Local working material — raw voice-memo transcripts / post drafts notes (repo is public)
+transcripts/
+
+# Local Claude Code context — repo is public, keep CLAUDE notes out of git
+CLAUDE.md
+.claude/
