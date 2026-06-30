@@ -1,0 +1,149 @@
+---
+title: "Cognitive Courage: The Real Bottleneck to Learning AI Tools"
+subtitle: "Learning a new AI workflow no longer means studying it first. The platform you work in is the platform you learn in, and the only thing between you and your first skill is the nerve to say 'I don't know – show me.'"
+author: "Matan Hakim"
+date: "2026-07-07"
+categories: [AI, learning, Claude Code, data science]
+image: "courage-loop.png"
+fig-width: 7.2
+fig-asp: 0.62
+fig-align: center
+cap-location: bottom
+out-width: "90%"
+---
+
+Last week, on the [R Weekly Highlights podcast](https://serve.podhome.fm/episodepage/r-weekly-highlights/issue-2026-w26-highlights), Eric Nantz was walking through Sharon Machlis's [10 tips for getting better R code from your AI coding agent](https://www.infoworld.com/article/4184642/10-tips-for-getting-better-r-code-from-your-ai-coding-agent.html). He reached the tip about *skills* – the reusable instruction files you hand a coding agent so it knows how to tackle a recurring kind of task – and added an honest aside:
+
+> So I've been very much a consumer of skills. I still haven't actually authored my own skill yet, but that is on my list this year.[^rwh]
+
+[^rwh]: Eric Nantz, *R Weekly Highlights*, episode 232 (issue 2026-W26), 26 June 2026, during the segment on AI coding tips (around 16:36). Episode page: <https://serve.podhome.fm/episodepage/r-weekly-highlights/issue-2026-w26-highlights>.
+
+I have enormous respect for Eric – few people have done more to teach this community – and I am picking on a single sentence said in passing, not on him. But that sentence captures a way of thinking about learning AI tools that I think is now exactly backwards. There is no skill to pencil in for "this year." Authoring your first skill is one sentence to Claude away. What stands between most of us and that sentence is not time, and not expertise. It is courage.
+
+I want to make that claim precisely, because it has a practical payoff: it should change how you spend your next hour with these tools.
+
+# Learning used to be a separate project
+
+Think about how you picked up a genuinely new skill in the old world, which is to say eighteen months ago. Say you wanted to learn Shiny, the framework for building reactive web apps in R. You bought the book, or opened the docs, and worked through them. You started a toy project on the side. You hit a wall, searched, landed on Stack Overflow, and when nothing fit you distilled the problem into a [reproducible example](https://reprex.tidyverse.org/) and asked your own question. Eventually you got unstuck and went back to the toy project.
+
+That loop is iterative, and it works. But notice two things about it. It is **linear**: you pick one skill and march along it, and the march is slow. And it is **separate from the work**: the learning is its own project, with its own clock, sitting beside whatever you were actually trying to ship. First the course, then the doing.
+
+# Now the workbench is the classroom
+
+Working with a coding agent collapses that separation. The platform you do the work in is the platform you learn in, and the learning happens on top of the real task rather than beside it.
+
+Here is the shape of it. You are in the middle of something real – cleaning a messy dataset, editing a podcast, wiring up a report. You notice you keep handing the agent the same instructions. You have read, somewhere, that *skills* exist. So you say: "turn what we just did into a skill." That is the whole move. You are not sitting down to study skill authoring; you are delegating it, in context, while the example is still warm. The agent writes the skill, you read it, you change a line, and now you have one. You learned what a skill is by making one, inside work you were doing anyway.
+
+This is why the cycles are so short. The old loop measured progress in weeks – a chapter here, a worked example there. The new one measures it in minutes, because every iteration hands you something you can use immediately and feedback you can act on right away. You are not learning *in order to* work. You are learning *by* working.
+
+# Why "on my list this year" is anachronistic
+
+Back to Eric's aside. The phrase "I still haven't authored my own skill, but it's on my list this year" belongs to the old model. It treats a skill as a body of knowledge you must acquire before you are allowed to use it, the way you might resolve to finally learn measure theory. So naturally it lands on a list, next to the other things you will get to when a free week appears.
+
+But there is nothing to acquire first. **Consuming a skill and authoring one are one gesture apart.** Eric is, by his own description, already a fluent consumer of skills; the distance from there to his first authored skill is a single sentence to the agent at the end of a task he was doing anyway. It is not a project for the third quarter. It is the next thing he says out loud. The to-do-list framing is not a personal oversight, it is the residue of a learning model the tools have quietly retired.
+
+# The bottleneck is courage, not capability
+
+If the old barriers are gone, it is worth being exact about what they were, because naming them shows what is left.
+
+You used to be blocked by **not knowing how** – the technique lived in a book you had not read. You were blocked by **not having the information** – the answer sat in a thread you had not found. And you were blocked by **the cost of bridging** – even with the technique in hand, fitting it into your specific project took real work. An agent now supplies all three on demand: the how, the information, and the integration into the very file in front of you.
+
+Strip those away and one thing remains. You have to be willing to say, out loud, to a machine: **I don't know how to do this – show me.** You have to start before you feel ready and let the not-knowing be the price of admission rather than a reason to wait. That readiness deserves a name, so I will call it **cognitive courage**: the willingness to enter a problem you cannot yet solve and learn it in the doing.
+
+Cognitive courage is now the binding constraint on how fast you learn. Not your ability, not your access to information, not your skill at integration, all of which are suddenly abundant. The scarce input is the nerve to begin.
+
+```{r}
+#| label: fig-loop
+#| fig-cap: "Two ways to pick up a new technique. The old path is a long, linear march through study and search that runs beside the real work. The new one is a tight loop that *is* the work – try something, ask the agent, learn, repeat – and its entrance is guarded only by the willingness to begin before you know how."
+#| fig-alt: "A two-part diagram. The top row, labelled THEN, learning was a separate project, shows four boxes in a straight line joined by arrows: Pick a skill, Study books and docs, Get stuck search ask, Finally apply, annotated weeks. The bottom row, labelled NOW, learning happens inside the work, shows a small three-node loop, Try it in real work, Ask the agent, Learn, with arrows cycling between them, annotated minutes. A gold box labelled Cognitive courage sits to the left with an arrow pointing into the loop."
+#| code-fold: true
+#| code-summary: "Show the code that draws the diagram"
+library(tidyverse)
+
+blue <- "#2C7FB8"
+gold <- "#EDB458"
+grey <- "#5B6770"
+
+# THEN: a long, linear track
+then_nodes <- tibble(
+  x = c(1, 3.3, 5.6, 7.9),
+  y = 4.2,
+  label = c("Pick a\nskill", "Study\nbooks & docs",
+            "Get stuck,\nsearch, ask", "Finally\napply")
+)
+then_arrows <- tibble(
+  x    = then_nodes$x[-nrow(then_nodes)] + 0.75,
+  xend = then_nodes$x[-1] - 0.75,
+  y = 4.2, yend = 4.2
+)
+
+# NOW: one tight loop, entered through a gate.
+# Nodes ordered as the cycle flows: Try -> Ask -> Learn -> Try.
+cx <- 6.2; cy <- 1.2; r <- 1.05
+ang <- c(90, 210, 330) * pi / 180        # top, bottom-left, bottom-right
+now_nodes <- tibble(
+  x = cx + r * cos(ang),
+  y = cy + r * sin(ang),
+  label = c("Try it in\nreal work", "Ask the\nagent", "Learn")
+)
+loop <- tibble(
+  x    = now_nodes$x,
+  y    = now_nodes$y,
+  xend = now_nodes$x[c(2, 3, 1)],
+  yend = now_nodes$y[c(2, 3, 1)]
+)
+gate <- tibble(x = cx - 3.9, y = cy)
+
+p <- ggplot() +
+  annotate("text", x = 0.2, y = 5.2, hjust = 0, fontface = "bold",
+           size = 4.0, colour = grey,
+           label = "THEN  ·  learning was a separate project") +
+  annotate("text", x = 0.2, y = 2.5, hjust = 0, fontface = "bold",
+           size = 4.0, colour = blue,
+           label = "NOW  ·  learning happens inside the work") +
+  geom_segment(data = then_arrows,
+               aes(x = x, y = y, xend = xend, yend = yend),
+               arrow = arrow(length = unit(0.18, "cm"), type = "closed"),
+               linewidth = 0.5, colour = grey) +
+  geom_label(data = then_nodes, aes(x, y, label = label),
+             fill = "grey95", colour = grey, linewidth = 0.3,
+             fontface = "bold", size = 3.0, lineheight = 0.9,
+             label.r = unit(0.12, "lines")) +
+  annotate("text", x = 8.8, y = 4.2, hjust = 0, fontface = "italic",
+           size = 2.9, colour = grey, label = "weeks") +
+  geom_label(data = gate, aes(x, y),
+             label = "Cognitive\ncourage", fill = gold, colour = "grey15",
+             linewidth = 0, fontface = "bold", size = 3.2, lineheight = 0.9,
+             label.r = unit(0.5, "lines")) +
+  geom_segment(aes(x = gate$x + 1.0, y = cy - 0.05,
+                   xend = cx + r * cos(210 * pi / 180) - 0.5, yend = cy - 0.45),
+               arrow = arrow(length = unit(0.18, "cm"), type = "closed"),
+               linewidth = 0.6, colour = gold) +
+  geom_curve(data = loop, aes(x = x, y = y, xend = xend, yend = yend),
+             curvature = 0.32, ncp = 12,
+             arrow = arrow(length = unit(0.16, "cm"), type = "closed"),
+             linewidth = 0.55, colour = blue) +
+  geom_label(data = now_nodes, aes(x, y, label = label),
+             fill = "#D6EAF2", colour = "#1b3b52", linewidth = 0.3,
+             fontface = "bold", size = 3.0, lineheight = 0.9,
+             label.r = unit(0.12, "lines")) +
+  annotate("text", x = cx, y = cy, label = "minutes",
+           fontface = "italic", size = 2.8, colour = blue) +
+  coord_fixed(clip = "off", xlim = c(0, 9.6), ylim = c(-0.4, 5.4)) +
+  theme_void()
+
+ggsave(
+  here::here("posts", "2026-07-07-cognitive-courage", "courage-loop.png"),
+  p, width = 7.2, height = 4.6, dpi = 150, bg = "white"
+)
+
+p
+```
+
+# Encourage, literally
+
+There is a reason the English word is built the way it is. To *encourage* someone is, etymologically, to *put courage into* them: *en-* (to make) plus *corage*. If the bottleneck is courage, then the most useful thing we can do for each other, and for ourselves, is exactly that. Lower the cost of admitting you do not know. Treat "show me how" as the strong move it is, not the embarrassing one.
+
+So here is a small call to action, mostly to my fellow data scientists. Embrace the gap between what you can do and what you would like to. Shorten the loop until learning and working are the same motion. The next time you catch yourself filing a tool under "things to learn this year," stop, open the work you are already doing, and ask the agent to do it with you, now. The skill was never the obstacle. The courage to reach for it, in public, mid-task, before you are ready, is the whole game.
+
+In my last post I argued that data scientists are [unusually well positioned for the AI era](../2026-06-24-data-scientists-ai-revolution/index.qmd) because the role already demanded the right mix of skills. This is the companion move. The floor rose, the tools are sitting right there, and the only upgrade still required is in your willingness to reach.
