@@ -2,7 +2,7 @@
 title: "Cognitive Courage: The Real Bottleneck to Learning AI Tools"
 subtitle: "Learning a new AI workflow no longer means studying it first. The platform you work in is the platform you learn in, and the only thing between you and your first skill is the nerve to say 'I don't know – show me.'"
 author: "Matan Hakim"
-date: "2026-07-07"
+date: "2026-07-27"
 categories: [AI, learning, Claude Code, data science]
 image: "courage-loop.png"
 fig-width: 8
@@ -12,7 +12,7 @@ cap-location: bottom
 out-width: "95%"
 ---
 
-Last week, on the [R Weekly Highlights podcast](https://serve.podhome.fm/episodepage/r-weekly-highlights/issue-2026-w26-highlights), Eric Nantz was walking through Sharon Machlis's [10 tips for getting better R code from your AI coding agent](https://www.infoworld.com/article/4184642/10-tips-for-getting-better-r-code-from-your-ai-coding-agent.html). He reached the tip about *skills* – the reusable instruction files you hand a coding agent so it knows how to tackle a recurring kind of task – and added an honest aside:
+Last month, on the [R Weekly Highlights podcast](https://serve.podhome.fm/episodepage/r-weekly-highlights/issue-2026-w26-highlights), Eric Nantz was walking through Sharon Machlis's [10 tips for getting better R code from your AI coding agent](https://www.infoworld.com/article/4184642/10-tips-for-getting-better-r-code-from-your-ai-coding-agent.html). He reached the tip about *skills* – the reusable instruction files you hand a coding agent so it knows how to tackle a recurring kind of task – and added an honest aside:
 
 > So I've been very much a consumer of skills. I still haven't actually authored my own skill yet, but that is on my list this year.[^rwh]
 
@@ -40,7 +40,7 @@ This is why the cycles are so short. The old loop measured progress in weeks –
 
 Back to Eric's aside. The phrase "I still haven't authored my own skill, but it's on my list this year" belongs to the old model. It treats a skill as a body of knowledge you must acquire before you are allowed to use it, the way you might resolve to finally learn measure theory. So naturally it lands on a list, next to the other things you will get to when a free week appears.
 
-But there is nothing to acquire first. **Consuming a skill and authoring one are one gesture apart.** Eric is, by his own description, already a fluent consumer of skills; the distance from there to his first authored skill is a single sentence to the agent at the end of a task he was doing anyway. It is not a project for the third quarter. It is the next thing he says out loud. The to-do-list framing is not a personal oversight, it is the residue of a learning model the tools have quietly retired.
+But there is nothing to acquire first. **Consuming a skill and authoring one are one gesture apart.** Eric is, by his own description, already a fluent consumer of skills; the distance from there to his first authored skill is a single sentence to the agent at the end of a task he was doing anyway. It is not a project for next quarter. It is the next thing he says out loud. The to-do-list framing is not a personal oversight, it is the residue of a learning model the tools have quietly retired.
 
 # The bottleneck is courage, not capability
 
@@ -145,7 +145,7 @@ ggplot() +
   theme_void() -> p
 
 ggsave(
-  here::here("posts", "2026-07-07-cognitive-courage", "courage-loop.png"),
+  here::here("posts", "2026-07-27-cognitive-courage", "courage-loop.png"),
   p, width = 8, height = 3.2, dpi = 160, bg = "white"
 )
 
@@ -158,4 +158,4 @@ There is a reason the English word is built the way it is. To *encourage* someon
 
 So here is a small call to action, mostly to my fellow data scientists. Embrace the gap between what you can do and what you would like to. Shorten the loop until learning and working are the same motion. The next time you catch yourself filing a tool under "things to learn this year," stop, open the work you are already doing, and ask the agent to do it with you, now. The skill was never the obstacle. The courage to reach for it, in public, mid-task, before you are ready, is the whole game.
 
-In my last post I argued that data scientists are [unusually well positioned for the AI era](../2026-06-24-data-scientists-ai-revolution/index.qmd) because the role already demanded the right mix of skills. This is the companion move. The floor rose, the tools are sitting right there, and the only upgrade still required is in your willingness to reach.
+In an earlier post I argued that data scientists are [unusually well positioned for the AI era](../2026-06-24-data-scientists-ai-revolution/index.qmd) because the role already demanded the right mix of skills. This is the companion move. The floor rose, the tools are sitting right there, and the only upgrade still required is in your willingness to reach.
