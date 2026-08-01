@@ -1,8 +1,15 @@
 project:
   type: website
+  # Render site pages only. Without this, the gitignored local working material
+  # (CLAUDE.md, transcripts/*.md) was also being turned into pages. Netlify never
+  # saw it because it builds from git, but keep it out of _site here too.
+  # A negation-only render list renders nothing at all, so this whitelists instead.
+  render:
+    - "**/*.qmd"
 
 website:
-  # site-url: https://www.matanhakim.org
+  title: "Matan Hakim - Policy Data Scientist"
+  site-url: https://www.matanhakim.com
   description: "Matan Hakim's personal website"
   image: profile.jpg
   favicon: profile.jpg
@@ -32,5 +39,6 @@ format:
       light: flatly
       dark: darkly
     css: styles.css
+    include-in-header: analytics.html
 execute:
   freeze: auto
