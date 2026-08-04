@@ -9,7 +9,10 @@ project:
 
 website:
   title: "Matan Hakim - Policy Data Scientist"
-  site-url: https://www.matanhakim.com
+  # Netlify serves the apex domain and 301-redirects www to it. site-url must name
+  # the host that answers 200, otherwise every canonical URL, og:url, sitemap entry
+  # and feed link points at a redirect and Google files them as "Page with redirect".
+  site-url: https://matanhakim.com
   description: "Matan Hakim's personal website"
   image: profile.jpg
   favicon: profile.jpg
