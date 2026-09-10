@@ -3,7 +3,7 @@ title: "Cognitive Courage: The Real Bottleneck to Learning AI Tools"
 subtitle: "Learning a new AI workflow no longer means studying it first. The platform you work in is the platform you learn in, and the only thing between you and your first skill is the nerve to say 'I don't know – show me.'"
 author: "Matan Hakim"
 date: "2026-07-27"
-categories: [AI, learning, Claude Code, data science]
+categories: [AI, learning, Claude Code, data science, RWeekly Highlights]
 image: "courage-loop.png"
 fig-width: 8
 fig-asp: 0.4
@@ -11,6 +11,8 @@ fig-align: center
 cap-location: bottom
 out-width: "95%"
 ---
+
+*(This blog post was chosen as a highlight for R Weekly [issue 2026-W32](https://rweekly.org/2026-W32.html), and was discussed on the [R Weekly Highlights podcast](https://serve.podhome.fm/episodepage/r-weekly-highlights/issue-2026-w32-highlights) in episode 238)*
 
 Last month, on the [R Weekly Highlights podcast](https://serve.podhome.fm/episodepage/r-weekly-highlights/issue-2026-w26-highlights), Eric Nantz was walking through Sharon Machlis's [10 tips for getting better R code from your AI coding agent](https://www.infoworld.com/article/4184642/10-tips-for-getting-better-r-code-from-your-ai-coding-agent.html). He reached the tip about *skills* – the reusable instruction files you hand a coding agent so it knows how to tackle a recurring kind of task – and added an honest aside:
 
